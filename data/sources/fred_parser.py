@@ -28,4 +28,5 @@ def parse_latest_observation(data: dict, series_id: str) -> EconomicObservation:
         series_id=series_id,
         date=latest["date"],
         value=float(value),
+        source="FRED",
     )
