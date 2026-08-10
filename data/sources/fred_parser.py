@@ -9,24 +9,68 @@ class EconomicObservation:
     source: str
 
 
-def parse_latest_observation(data: dict, series_id: str) -> EconomicObservation:
+def parse_latest_observation(
+    data: dict,
+    series_id: str,
+) -> EconomicObservation:
+    """
+    Parse the latest valid observation from a FRED response.
+    """
+
     observations = data.get("observations", [])
 
     if not observations:
         raise ValueError(f"No observations returned for {series_id}")
 
-    latest = observations[-1]
+    for observation in reversed(observations):
+        value = observation.get("value")
 
-    value = latest.get("value")
+        if value not in (None, ".", ""):
+            return EconomicObservation(
+                series_id=series_id,
+                date=observation["date"],
+                value=float(value),
+                source="FRED",
+            )
 
-    if value in (None, ".", ""):
-        raise ValueError(
-            f"Latest observation for {series_id} has no valid value."
+    raise ValueError(
+        f"No valid observations found for {series_id}"
+    )
+
+
+def parse_observations(
+    data: dict,
+    series_id: str,
+) -> list[EconomicObservation]:
+    """
+    Parse all valid observations from a FRED response.
+    """
+
+    observations = data.get("observations", [])
+
+    if not observations:
+        raise ValueError(f"No observations returned for {series_id}")
+
+    parsed = []
+
+    for observation in observations:
+        value = observation.get("value")
+
+        if value in (None, ".", ""):
+            continue
+
+        parsed.append(
+            EconomicObservation(
+                series_id=series_id,
+                date=observation["date"],
+                value=float(value),
+                source="FRED",
+            )
         )
 
-    return EconomicObservation(
-        series_id=series_id,
-        date=latest["date"],
-        value=float(value),
-        source="FRED",
-    )
+    if not parsed:
+        raise ValueError(
+            f"No valid observations found for {series_id}"
+        )
+
+    return parsed

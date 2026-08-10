@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from intelligence.event import MarketEvent
+from intelligence.indicators import INDICATORS
 from data.sources.fred_parser import parse_latest_observation
 
 
@@ -15,17 +16,25 @@ def observation_to_event(
 
     observation = parse_latest_observation(data, series_id)
 
+    metadata = INDICATORS.get(series_id)
+
+    if metadata is None:
+        raise ValueError(
+            f"No indicator metadata found for series: {series_id}"
+        )
+
     return MarketEvent(
         event_name=event_name,
-        category="Economic Data",
+        category=metadata.category,
         source="FRED",
         timestamp=datetime.now(),
         actual=observation.value,
-        unit="%",
+        unit=metadata.unit,
         headline=f"{event_name} latest observation",
         description=(
             f"Latest FRED observation for {event_name}: "
-            f"{observation.value}% on {observation.date}."
+            f"{observation.value} {metadata.unit} "
+            f"on {observation.date}."
         ),
         sources=["FRED"],
     )
