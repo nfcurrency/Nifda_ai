@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Optional
 
 
@@ -9,6 +10,8 @@ class ReleaseResult:
     """
 
     event_name: str
+    indicator_id: str
+    timestamp: datetime
 
     actual: float
     forecast: Optional[float] = None

@@ -27,14 +27,16 @@ class ReleaseAnalyzer:
         )
 
         result = ReleaseResult(
-            event_name=event.event_name,
-            actual=event.actual,
-            forecast=event.forecast,
-            previous=event.previous,
-            surprise=surprise_result.numerical_surprise,
-            economic_direction=surprise_result.direction,
-            importance=INDICATORS[indicator_id].importance,
-        )
+    event_name=event.event_name,
+    indicator_id=indicator_id,
+    timestamp=event.timestamp,
+    actual=event.actual,
+    forecast=event.forecast,
+    previous=event.previous,
+    surprise=surprise_result.numerical_surprise,
+    economic_direction=surprise_result.direction,
+    importance=INDICATORS[indicator_id].importance,
+)
 
         if surprise_result.direction is None:
             return result
