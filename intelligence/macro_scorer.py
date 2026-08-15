@@ -13,13 +13,11 @@ class MacroScorer:
     """
 
     def score(self, context: MacroContext) -> dict:
-
         inflation_score = 0.0
         growth_score = 0.0
         fed_score = 0.0
 
         for release in context.releases:
-
             surprise_strength = calculate_surprise_strength(
                 release.surprise
             )
@@ -61,8 +59,18 @@ class MacroScorer:
             "fed_score": round(fed_score, 2),
             "inflation_bias": self._bias(inflation_score),
             "growth_bias": self._bias(growth_score),
-            "fed_bias": self._bias(fed_score),
+            "fed_bias": self._policy_bias(fed_score),
         }
+
+    @staticmethod
+    def _policy_bias(score: float) -> str:
+        if score > 0:
+            return "HAWKISH"
+
+        if score < 0:
+            return "DOVISH"
+
+        return "NEUTRAL"
 
     @staticmethod
     def _score_direction(
@@ -71,7 +79,6 @@ class MacroScorer:
         positive: str,
         negative: str,
     ) -> float:
-
         if value == positive:
             return weight
 
@@ -82,7 +89,6 @@ class MacroScorer:
 
     @staticmethod
     def _bias(score: float) -> str:
-
         if score > 0:
             return "POSITIVE"
 
