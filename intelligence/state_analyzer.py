@@ -56,7 +56,4 @@ class StateAnalyzer:
         if direction == "UNCHANGED":
             return f"{factor} is unchanged."
 
-        return (
-            f"{factor} is {direction.lower()} "
-            f"with {momentum.lower()} momentum."
-        )
+        return f"{factor} has {momentum.lower()} momentum."

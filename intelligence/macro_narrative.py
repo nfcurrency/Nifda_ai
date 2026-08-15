@@ -86,10 +86,10 @@ class MacroNarrativeEngine:
     @staticmethod
     def _policy_view(bias: str) -> str:
 
-        if bias == "POSITIVE":
+        if bias == "HAWKISH":
             return "Policy conditions favor a more restrictive Fed stance."
 
-        if bias == "NEGATIVE":
+        if bias == "DOVISH":
             return "Policy conditions favor a more accommodative Fed stance."
 
         return "Policy conditions provide no clear directional signal."
@@ -105,6 +105,10 @@ class MacroNarrativeEngine:
             "DISINFLATIONARY_SLOWDOWN": (
                 "Falling inflation alongside weaker growth may increase "
                 "expectations for future monetary easing."
+            ),
+            "REFLATIONARY": (
+                "Rising inflation alongside stronger growth may increase "
+                "expectations for tighter monetary policy."
             ),
             "GOLDILOCKS": (
                 "Falling inflation with stronger growth creates a "
