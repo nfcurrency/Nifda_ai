@@ -19,6 +19,110 @@ class MacroSnapshot:
     gdp: MacroState
     fed_policy: MacroState
 
+    def states(self) -> list[MacroState]:
+        """
+        Return all macro states in a consistent order.
+        """
+
+        return [
+            self.inflation,
+            self.unemployment,
+            self.payrolls,
+            self.retail_sales,
+            self.industrial_production,
+            self.gdp,
+            self.fed_policy,
+        ]
+
+    def rising_factors(self) -> list[str]:
+        """
+        Return factors currently rising.
+        """
+
+        return [
+            state.factor
+            for state in self.states()
+            if state.direction == "RISING"
+        ]
+
+    def falling_factors(self) -> list[str]:
+        """
+        Return factors currently falling.
+        """
+
+        return [
+            state.factor
+            for state in self.states()
+            if state.direction == "FALLING"
+        ]
+
+    def accelerating_factors(self) -> list[str]:
+        """
+        Return factors with accelerating momentum.
+        """
+
+        return [
+            state.factor
+            for state in self.states()
+            if state.momentum == "ACCELERATING"
+        ]
+
+    def decelerating_factors(self) -> list[str]:
+        """
+        Return factors with decelerating momentum.
+        """
+
+        return [
+            state.factor
+            for state in self.states()
+            if state.momentum == "DECELERATING"
+        ]
+
+    def interpretation(self) -> str:
+        """
+        Produce a concise description of the current macro state.
+        """
+
+        rising = self.rising_factors()
+        falling = self.falling_factors()
+        accelerating = self.accelerating_factors()
+        decelerating = self.decelerating_factors()
+
+        parts = []
+
+        if rising:
+            parts.append(
+                "Rising factors: "
+                + ", ".join(rising)
+                + "."
+            )
+
+        if falling:
+            parts.append(
+                "Falling factors: "
+                + ", ".join(falling)
+                + "."
+            )
+
+        if accelerating:
+            parts.append(
+                "Accelerating factors: "
+                + ", ".join(accelerating)
+                + "."
+            )
+
+        if decelerating:
+            parts.append(
+                "Decelerating factors: "
+                + ", ".join(decelerating)
+                + "."
+            )
+
+        if not parts:
+            return "Macro conditions are broadly stable."
+
+        return " ".join(parts)
+
 
 class MacroAggregator:
     """
