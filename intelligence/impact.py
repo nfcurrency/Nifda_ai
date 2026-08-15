@@ -29,4 +29,34 @@ IMPACTS = {
         growth_signal="NEUTRAL",
         fed_policy_bias="HAWKISH",
     ),
+
+    "PAYEMS": EconomicImpact(
+        inflationary_pressure="INFLATIONARY",
+        growth_signal="POSITIVE",
+        fed_policy_bias="HAWKISH",
+    ),
+
+    "GDPC1": EconomicImpact(
+        inflationary_pressure="NEUTRAL",
+        growth_signal="POSITIVE",
+        fed_policy_bias="HAWKISH",
+    ),
+
+    "RSAFS": EconomicImpact(
+        inflationary_pressure="INFLATIONARY",
+        growth_signal="POSITIVE",
+        fed_policy_bias="HAWKISH",
+    ),
+
+    "INDPRO": EconomicImpact(
+        inflationary_pressure="INFLATIONARY",
+        growth_signal="POSITIVE",
+        fed_policy_bias="HAWKISH",
+    ),
+
+    "FEDFUNDS": EconomicImpact(
+        inflationary_pressure="INFLATIONARY",
+        growth_signal="NEGATIVE",
+        fed_policy_bias="HAWKISH",
+    ),
 }
